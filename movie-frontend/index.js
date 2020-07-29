@@ -62,7 +62,7 @@ const showMovie = (e, movie) => {
     </form>
     <div id='comment-section'><ul id='movie-comments'></ul>
     </div>
-     `
+    `
     // console.log(movie)
     let ul = document.getElementById('movie-comments')
     movie.attributes.comments.forEach(comment => {
@@ -84,22 +84,22 @@ const showMovie = (e, movie) => {
 
 const addComment = (e, movie) => {
     e.preventDefault()
-    console.log(movie)
+
     let ul = document.getElementById('movie-comments')
     let comment = document.createElement('li')
     comment.textContent = e.target.comment.value
     ul.appendChild(comment)
-    console.log(movie)
+
     let data = {content: e.target.comment.value, movie_id: movie.id, user_id: 5}
 
     
-    fetch(`http://localhost:3000/movies/${movie.id}`, {
-        method: 'PATCH', // or 'PUT'
+    fetch(`http://localhost:3000/comments`, {
+        method: 'POST', // or 'PUT'
         headers: {
             'Content-Type': 'application/json',
             Accept: 'application/json'
         },
-        //body: JSON.stringify(data),
+        body: JSON.stringify(data),
     }) 
 }
 
