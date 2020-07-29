@@ -72,7 +72,7 @@ const addComment = (e, movie) => {
 
     let data = {content: e.target.comment.value, movie_id: movie.id, user_id: 5}
 
-    console.log(data.id)
+    // console.log(data.id)
     fetch(`http://localhost:3000/comments`, {
         method: 'POST', // or 'PUT'
         headers: {
