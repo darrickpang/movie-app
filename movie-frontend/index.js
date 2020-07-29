@@ -2,6 +2,15 @@ document.addEventListener('DOMContentLoaded', () => {
     fetchMovies()
 })
 
+function movies(json){
+    console.log(json)
+}
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    fetchMovies()
+})
+
 const fetchMovies = () => {
     fetch('http://localhost:3000/movies')
     .then(resp => resp.json())
@@ -23,21 +32,25 @@ const listMovies = (movies) => {
         
         ul.appendChild(li)
     })
+    
+
 }
 
 const showMovie = (e, movie) => {
     let div = document.getElementById('show-panel')
+    console.log(e)
+    console.log(movie)
     div.innerHTML = `
-    <h1>${movie.title}</h1>
+    <h2>${movie.title}</h2>
     <h2>${movie.director}</h2>
     <h3>${movie.year}</h3>
     <p>${movie.description}</p>
-    <button class='like'>Like</button> 
+    <button id='like'>Like</button> 
     <form id='comment-form'>
             <input id='comment' placeholder='comment'>
             <input type='submit' value='Leave Comment'>
-    </form>`
-
+    </form>
+     `
     let likeButton = document.querySelector('button')
     likeButton.addEventListener('click', () => {
         handleLike();
@@ -57,12 +70,27 @@ const addComment = (e, movie) => {
     comment.textContent = e.target.comment.value
     commentForm.appendChild(comment)
 
-    let data = {comments: e.target.comment.value}
-    fetch(`http://localhost:3000/comments/1`, {
-        method: 'PATCH', 
+    let data = {content: e.target.comment.value, movie_id: movie.id, user_id: 5}
+
+    console.log(data.id)
+    fetch(`http://localhost:3000/comments`, {
+        method: 'POST', // or 'PUT'
         headers: {
             'Content-Type': 'application/json',
+            Accept: 'application/json'
         },
         body: JSON.stringify(data),
     })
 }
+
+{/* <form id='new-movie-form'>
+            <input id='title' placeholder='title'>
+            <input id='description' placeholder='description'>
+            <input id='img_url' placeholder='image'>
+            <input type='submit' value='submit'>
+        </form> */}
+
+{/* <img src='${book.img_url}'>
+            <h4>${book.title}</h4>
+            <p>${book.description}</p>
+            <button id='like'><3</button> */}
