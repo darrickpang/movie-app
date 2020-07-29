@@ -24,3 +24,19 @@ class CommentsController < ApplicationController
         params.require(:comment).permit(:content, :movie_id, :user_id)
     end
 end
+
+
+# def create
+#     role = Role.find_or_create_by(name:params[:role])
+#     @cat = Cat.create(
+#         name: params[:name],
+#         catchphrase: params[:catchphrase],
+#         imgUrl: params[:imgUrl],
+#         role: role
+#     )
+#     if @cat.valid?
+#         render json: @cat
+#     else
+#         render json: {errors:@cat.full_message}, status:400
+#     end 
+# end 

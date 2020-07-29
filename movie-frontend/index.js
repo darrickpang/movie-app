@@ -84,7 +84,7 @@ const showMovie = (e, movie) => {
 
 const addComment = (e, movie) => {
     e.preventDefault()
-    console.log(movie)
+    // console.log(movie)
     let ul = document.getElementById('movie-comments')
     let comment = document.createElement('li')
     comment.textContent = e.target.comment.value
@@ -93,24 +93,12 @@ const addComment = (e, movie) => {
     let data = {content: e.target.comment.value, movie_id: movie.id, user_id: 5}
 
     
-    fetch(`http://localhost:3000/movies/${movie.id}`, {
-        method: 'PATCH', // or 'PUT'
+    fetch(`http://localhost:3000/comments`, {
+        method: 'POST', // or 'PUT'
         headers: {
             'Content-Type': 'application/json',
             Accept: 'application/json'
         },
-        //body: JSON.stringify(data),
+        body: JSON.stringify(data),
     }) 
 }
-
-{/* <form id='new-movie-form'>
-            <input id='title' placeholder='title'>
-            <input id='description' placeholder='description'>
-            <input id='img_url' placeholder='image'>
-            <input type='submit' value='submit'>
-        </form> */}
-
-{/* <img src='${book.img_url}'>
-            <h4>${book.title}</h4>
-            <p>${book.description}</p>
-            <button id='like'><3</button> */}
