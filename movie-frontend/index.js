@@ -2,15 +2,6 @@ document.addEventListener('DOMContentLoaded', () => {
     fetchMovies()
 })
 
-function movies(json){
-    console.log(json)
-}
-
-
-document.addEventListener('DOMContentLoaded', () => {
-    fetchMovies()
-})
-
 const fetchMovies = () => {
     fetch('http://localhost:3000/movies')
     .then(resp => resp.json())
@@ -19,38 +10,67 @@ const fetchMovies = () => {
 
 const listMovies = (movies) => {
     let ul = document.getElementById('list')
-    movies.forEach(movie => {
+    for(let i = 0; i < movies.data.length; i++) {
+        // console.log(movies.data[i].attributes.title)
+
         let li = document.createElement('li')
         li.innerHTML = `
-            <h3>${movie.title}</h3> 
+            <h3>${movies.data[i].attributes.title}</h3> 
         `
         
         li.addEventListener('click', (e) => {
-             showMovie(e, movie)
+             showMovie(e, movies.data[i])
         })
         // console.log(movie[0].title)
         
         ul.appendChild(li)
-    })
+    }
+    // console.log(movies)
+    // let ul = document.getElementById('list')
+    // movies.data.forEach(movie => {
+    //     // console.log(movie)
+    //     let li = document.createElement('li')
+    //     li.innerHTML = `
+    //         <h3>${movies.data[0].attributes.title}</h3> 
+    //     `
+        
+    //     li.addEventListener('click', (e) => {
+    //          showMovie(e, movie)
+    //     })
+    //     // console.log(movie[0].title)
+        
+    //     ul.appendChild(li)
+    // })
     
 
 }
 
 const showMovie = (e, movie) => {
     let div = document.getElementById('show-panel')
-    console.log(e)
-    console.log(movie)
+    // let i = movie.data[0].attributes.id
+    // console.log(e)
+    // console.log(movie)
     div.innerHTML = `
-    <h2>${movie.title}</h2>
-    <h2>${movie.director}</h2>
-    <h3>${movie.year}</h3>
-    <p>${movie.description}</p>
+    <h2>${movie.attributes.title}</h2>
+    <h2>${movie.attributes.director}</h2>
+    <h3>${movie.attributes.year}</h3>
+    <p>${movie.attributes.description}</p>
     <button id='like'>Like</button> 
     <form id='comment-form'>
             <input id='comment' placeholder='comment'>
             <input type='submit' value='Leave Comment'>
     </form>
+    <div id='comment-section'><ul id='movie-comments'></ul>
+    </div>
      `
+    // console.log(movie)
+    let ul = document.getElementById('movie-comments')
+    movie.attributes.comments.forEach(comment => {
+        let li = document.createElement('li')
+        li.innerText = comment.content
+        ul.appendChild(li)
+    })
+    
     let likeButton = document.querySelector('button')
     likeButton.addEventListener('click', () => {
         handleLike();
@@ -64,23 +84,23 @@ const showMovie = (e, movie) => {
 
 const addComment = (e, movie) => {
     e.preventDefault()
-    
-    let commentForm = document.getElementById('comment-form')
+    console.log(movie)
+    let ul = document.getElementById('movie-comments')
     let comment = document.createElement('li')
     comment.textContent = e.target.comment.value
-    commentForm.appendChild(comment)
-
+    ul.appendChild(comment)
+    console.log(movie)
     let data = {content: e.target.comment.value, movie_id: movie.id, user_id: 5}
 
-    console.log(data.id)
-    fetch(`http://localhost:3000/comments`, {
-        method: 'POST', // or 'PUT'
+    
+    fetch(`http://localhost:3000/movies/${movie.id}`, {
+        method: 'PATCH', // or 'PUT'
         headers: {
             'Content-Type': 'application/json',
             Accept: 'application/json'
         },
-        body: JSON.stringify(data),
-    })
+        //body: JSON.stringify(data),
+    }) 
 }
 
 {/* <form id='new-movie-form'>
