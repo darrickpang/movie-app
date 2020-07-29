@@ -2,15 +2,6 @@ document.addEventListener('DOMContentLoaded', () => {
     fetchMovies()
 })
 
-function movies(json){
-    console.log(json)
-}
-
-
-document.addEventListener('DOMContentLoaded', () => {
-    fetchMovies()
-})
-
 const fetchMovies = () => {
     fetch('http://localhost:3000/movies')
     .then(resp => resp.json())
@@ -32,14 +23,11 @@ const listMovies = (movies) => {
         
         ul.appendChild(li)
     })
-    
-
 }
 
 const showMovie = (e, movie) => {
     let div = document.getElementById('show-panel')
-    console.log(e)
-    console.log(movie)
+    
     div.innerHTML = `
     <h2>${movie.title}</h2>
     <h2>${movie.director}</h2>
@@ -51,6 +39,7 @@ const showMovie = (e, movie) => {
             <input type='submit' value='Leave Comment'>
     </form>
      `
+    console.log(movie)
     let likeButton = document.querySelector('button')
     likeButton.addEventListener('click', () => {
         handleLike();
@@ -74,7 +63,7 @@ const addComment = (e, movie) => {
 
     console.log(data.id)
     fetch(`http://localhost:3000/comments`, {
-        method: 'POST', // or 'PUT'
+        method: 'POST', 
         headers: {
             'Content-Type': 'application/json',
             Accept: 'application/json'

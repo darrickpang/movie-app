@@ -1,4 +1,4 @@
 class CommentSerializer
   include FastJsonapi::ObjectSerializer
-  attributes :movie, :user
+  attributes 
 end
