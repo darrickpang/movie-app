@@ -5,12 +5,12 @@ class CommentsController < ApplicationController
     end
 
     def show
-        movie = Comment.find(params[:id])
-        render json: movie.to_json
+        comment = Comment.find(params[:id])
+        render json: comment.to_json
     end
 
     def create
-        #byebug
+        # byebug
         comment = Comment.create(comment_params)
         render json: comment.to_json
     end
