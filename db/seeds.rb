@@ -63,6 +63,6 @@ movie9 = Movie.create(title: "Schindler's List", director: "Steven Spielberg", d
 # comment2 = Comment.create(content: 'content2', user_id: user2.id, movie_id: movie2.id)
 # comment3 = Comment.create(content: 'content3', user_id: user3.id, movie_id: movie4.id)
 
-like1 = Like.create(user_id: user1.id, movie_id: movie2.id, status: true)
-like2 = Like.create(user_id: user2.id, movie_id: movie2.id, status: false)
+# like1 = Like.create(user_id: user1.id, movie_id: movie2.id, status: true)
+# like2 = Like.create(user_id: user2.id, movie_id: movie2.id, status: false)
 # like3 = Like.create(user_id: 3, movie_id: 3, likeStatus: true)

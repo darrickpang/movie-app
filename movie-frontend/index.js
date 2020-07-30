@@ -100,9 +100,6 @@ const listMovies = (movies) => {
     }
 }
 
-const EMPTY_HEART = '♡'
-const FULL_HEART = '♥'
-
 const showMovie = (e, movie) => {
     let div = document.getElementById('show-panel')
     
@@ -120,21 +117,25 @@ const showMovie = (e, movie) => {
     </div>
     `
 
-    // return (status ? addLike() : removeLike());
-    // let likeStatus = funcion()
-
-
-
     let ul = document.getElementById('movie-comments')
     movie.attributes.comments.forEach(comment => {
         let li = document.createElement('li')
         li.innerText = comment.content
         ul.appendChild(li)
+
+        let editButton = document.createElement('button')
+        editButton.innerText = 'Edit'
+        li.append(editButton)
+
+        let deleteButton = document.createElement('button')
+        deleteButton.innerText = 'Delete'
+        li.append(deleteButton)
     })
     
     let likeButton = document.querySelector('button')
     likeButton.addEventListener('click', (e) => {
-        likeStatus(e, movie);
+        likeStatus(e, movie),
+        handleLike(e, movie)
     })
 
     //likeStatus(movie)
@@ -145,7 +146,8 @@ const showMovie = (e, movie) => {
     })
 }
 
-const likeStatus = (e, movie) =>{
+const likeStatus = (e, movie) =>{                       // NEEDS TO BE FIXED!!!
+    e.preventDefault()
     let likeButton = document.getElementById('like')
     // console.log(movie.data.attributes.likes)
     console.log(movie.attributes.likes)
@@ -160,16 +162,29 @@ const likeStatus = (e, movie) =>{
       })
     })
     if(movie.status == true){
-        e.likeButton.innerText = '♡'
+        likeButton.innerText = '♡' //this works, try it
         movie.status = false
     }
     else{
-        e.likeButton.innerText = '♥'
+        likeButton.innerText = '♥'
         movie.status = true   
     }
 }
 
+// let foundUser = userArray.find(function(post , index) {
+//     if (post.name == username)
+//     return true;
+// })
+
+// if (foundUser) {
+//     fetchMovies();
+    
+// } else {
+//     alert('Username Not Found! Please Create User!')
+// }
+
 const handleLike = (e, movie) => {
+    e.preventDefault()
     // console.log(e)
     let data = {movie_id: movie.id, user_id: found_user_id}
     fetch(`http://localhost:3000/likes`, {
@@ -191,6 +206,10 @@ const addComment = (e, movie) => {
     let comment = document.createElement('li')
     comment.textContent = e.target.comment.value
     ul.appendChild(comment)
+    
+    let edit = ul.querySelector(li)
+    let editButton = document.createElement('button')
+    edit.append(editButton)
 
     let data = {content: e.target.comment.value, movie_id: movie.id, user_id: found_user_id}
     
