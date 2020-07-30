@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', () => {
-    //fetchMovies()
     initializeUserForm()
     initializeLoginForm()
 })
@@ -36,9 +35,9 @@ const initializeLoginForm = () =>{
     
     let loginForm = document.getElementById('login-form')
     loginForm.addEventListener('submit', (e) => {
-        // console.log(e)
+
         fetchUser(e)
-        // debugger
+
     })
 }
 
@@ -52,7 +51,6 @@ const fetchUser = (e) => {
 }
 
 const checkUser = (username, userArray) => {
-    //console.log(userArray)
 
     let foundUser = userArray.find(function(post , index) {
         if (post.name == username)
@@ -66,20 +64,6 @@ const checkUser = (username, userArray) => {
         alert('Username Not Found! Please Create User!')
     }
     found_user_id = foundUser.id
-    // console.log(foundUser)
-    // if(post.name == username)
-    // console.log(foundUser)
-    // for(i=0; i< userArray.length; i++) {
-    //     if (username === userArray[i].name) {
-    //         console.log('success')
-    //         console.log(username)
-    //         console.log(userArray[i])
-    //         fetchMovies()
-    //     }
-    //     else{
-    //         //alert('ERROR');
-    //     }
-    // }
 }
 
 const addUser = (e) => {
@@ -87,7 +71,7 @@ const addUser = (e) => {
     let data = ({name: e.target["0"].value})
 
     fetch(`http://localhost:3000/users`, {
-        method: 'POST', // or 'PUT'
+        method: 'POST',
         headers: {
             'Content-Type': 'application/json',
             Accept: 'application/json'
@@ -105,46 +89,29 @@ const fetchMovies = () => {
 const listMovies = (movies) => {
     let ul = document.getElementById('list')
     for(let i = 0; i < movies.data.length; i++) {
-        // console.log(movies.data[i].attributes.title)
-
         let li = document.createElement('li')
         li.innerHTML = `
             <h3>${movies.data[i].attributes.title}</h3> `
         
         li.addEventListener('click', (e) => {
              showMovie(e, movies.data[i])
-        })
-        // console.log(movie[0].title)
-        
+        })        
         ul.appendChild(li)
     }
-    // console.log(movies)
-    // let ul = document.getElementById('list')
-    // movies.data.forEach(movie => {
-    //     // console.log(movie)
-    //     let li = document.createElement('li')
-    //     li.innerHTML = `
-    //         <h3>${movies.data[0].attributes.title}</h3> 
-    //     `
-    //     li.addEventListener('click', (e) => {
-    //          showMovie(e, movie)
-    //     })
-    //     // console.log(movie[0].title)
-    //     ul.appendChild(li)
-    // })
 }
+
+const EMPTY_HEART = '♡'
+const FULL_HEART = '♥'
 
 const showMovie = (e, movie) => {
     let div = document.getElementById('show-panel')
-    // let i = movie.data[0].attributes.id
-    // console.log(e)
-    // console.log(movie)
+    
     div.innerHTML = `
     <h2>${movie.attributes.title}</h2>
     <h2>${movie.attributes.director}</h2>
     <h3>${movie.attributes.year}</h3>
     <p>${movie.attributes.description}</p>
-    <button id='like'>Like</button> 
+    <button id='like'>${EMPTY_HEART}</button> 
     <form id='comment-form'>
             <input id='comment' placeholder='comment'>
             <input type='submit' value='Leave Comment'>
@@ -152,7 +119,12 @@ const showMovie = (e, movie) => {
     <div id='comment-section'><ul id='movie-comments'></ul>
     </div>
     `
-    // console.log(movie)
+
+    // return (status ? addLike() : removeLike());
+    // let likeStatus = funcion()
+
+
+
     let ul = document.getElementById('movie-comments')
     movie.attributes.comments.forEach(comment => {
         let li = document.createElement('li')
@@ -162,8 +134,10 @@ const showMovie = (e, movie) => {
     
     let likeButton = document.querySelector('button')
     likeButton.addEventListener('click', (e) => {
-        handleLike(e);
+        likeStatus(e, movie);
     })
+
+    //likeStatus(movie)
 
     let commentForm = document.getElementById('comment-form')
     commentForm.addEventListener('submit', (e) => {
@@ -171,32 +145,47 @@ const showMovie = (e, movie) => {
     })
 }
 
-const handleLike = (e) => {
-    console.log(e)
+const likeStatus = (e, movie) =>{
+    let likeButton = document.getElementById('like')
+    // console.log(movie.data.attributes.likes)
+    console.log(movie.attributes.likes)
+    fetch(`http://localhost:3000/movies/${movie.id}`, {
+        method: 'PATCH',
+        headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json"
+        },
+        body: JSON.stringify({
+            status: movie.status
+      })
+    })
+    if(movie.status == true){
+        e.likeButton.innerText = '♡'
+        movie.status = false
+    }
+    else{
+        e.likeButton.innerText = '♥'
+        movie.status = true   
+    }
 }
 
-// const addLike = (item) => {
-//     console.log(item)
-//     let likes = item.likes+=1
-//     console.log(likes)
+const handleLike = (e, movie) => {
+    // console.log(e)
+    let data = {movie_id: movie.id, user_id: found_user_id}
+    fetch(`http://localhost:3000/likes`, {
+        method: 'POST', 
+        headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json'
+        },
+        body: JSON.stringify(data),
+    })
+    // debugger 
+}
 
-//     fetch(`http://localhost:3000/recipe/1`, {
-//         method:'PATCH',
-//         headers:{
-//             'Content-Type':'application/json'
-//         },
-//         body: JSON.stringify({likes:likes})
-//     })
-//     .then(res => res.json())
-//     .then(json => {
-//       let oldLikes =  card.querySelector('.likes')
-//       oldLikes.innerText = `${json.likes} likes`
-//     })
-// }
 
 const addComment = (e, movie) => {
     e.preventDefault()
-    // console.log(movie)
 
     let ul = document.getElementById('movie-comments')
     let comment = document.createElement('li')
@@ -206,7 +195,7 @@ const addComment = (e, movie) => {
     let data = {content: e.target.comment.value, movie_id: movie.id, user_id: found_user_id}
     
     fetch(`http://localhost:3000/comments`, {
-        method: 'POST', // or 'PUT'
+        method: 'POST', 
         headers: {
             'Content-Type': 'application/json',
             Accept: 'application/json'
