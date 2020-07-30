@@ -1,6 +1,102 @@
 document.addEventListener('DOMContentLoaded', () => {
-    fetchMovies()
+    //fetchMovies()
+    initializeUserForm()
+    initializeLoginForm()
 })
+
+const initializeUserForm = () =>{
+    let body = document.querySelector('body')
+    let span = document.createElement('span')
+    span.setAttribute('id', 'userSpan')
+    span.innerHTML = `
+    <form id='user-form'>
+            <input id='username' placeholder='username'>
+            <input type='submit' value='Create User'>
+    </form>
+    `
+    body.appendChild(span)
+    
+    let userForm = document.getElementById('user-form')
+    userForm.addEventListener('submit', (e) => {
+        addUser(e)
+    })
+}
+
+const initializeLoginForm = () =>{
+    let body = document.querySelector('body')
+    let span = document.createElement('span')
+    span.setAttribute('id', 'loginSpan')
+    span.innerHTML = `
+    <form id='login-form'>
+            <input id='username' placeholder='username'>
+            <input type='submit' value='Login'>
+    </form>
+    `
+    body.appendChild(span)
+    
+    let loginForm = document.getElementById('login-form')
+    loginForm.addEventListener('submit', (e) => {
+        // console.log(e)
+        fetchUser(e)
+        // debugger
+    })
+}
+
+const fetchUser = (e) => {
+    e.preventDefault()
+    let data = ({name: e.target["0"].value})
+
+    fetch(`http://localhost:3000/users`) 
+    .then(res => res.json())
+    .then(json => checkUser(data.name, json))
+    
+
+}
+
+const checkUser = (username, userArray) => {
+    //console.log(userArray)
+
+    let foundUser = userArray.find(function(post , index) {
+        if (post.name == username)
+        return true;
+    })
+
+    if (foundUser) {
+        fetchMovies();
+    } else {
+        alert('Username Not Found! Please Create User!')
+    }
+
+    console.log(foundUser)
+    // if(post.name == username)
+    // console.log(foundUser)
+
+    // for(i=0; i< userArray.length; i++) {
+    //     if (username === userArray[i].name) {
+    //         console.log('success')
+    //         console.log(username)
+    //         console.log(userArray[i])
+    //         fetchMovies()
+    //     }
+    //     else{
+    //         //alert('ERROR');
+    //     }
+    // }
+}
+
+const addUser = (e) => {
+    e.preventDefault()
+    let data = ({name: e.target["0"].value})
+
+    fetch(`http://localhost:3000/users`, {
+        method: 'POST', // or 'PUT'
+        headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json'
+        },
+        body: JSON.stringify(data),
+    }) 
+}
 
 const fetchMovies = () => {
     fetch('http://localhost:3000/movies')
@@ -41,8 +137,6 @@ const listMovies = (movies) => {
         
     //     ul.appendChild(li)
     // })
-    
-
 }
 
 const showMovie = (e, movie) => {
@@ -91,7 +185,7 @@ const addComment = (e, movie) => {
     comment.textContent = e.target.comment.value
     ul.appendChild(comment)
 
-    let data = {content: e.target.comment.value, movie_id: movie.id, user_id: 5}
+    let data = {content: e.target.comment.value, movie_id: movie.id, user_id: 6}
 
     
     fetch(`http://localhost:3000/comments`, {
