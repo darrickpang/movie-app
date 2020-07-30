@@ -61,9 +61,11 @@ const checkUser = (username, userArray) => {
 
     if (foundUser) {
         fetchMovies();
+        
     } else {
         alert('Username Not Found! Please Create User!')
     }
+    found_user_id = foundUser.id
     // console.log(foundUser)
     // if(post.name == username)
     // console.log(foundUser)
@@ -170,8 +172,27 @@ const showMovie = (e, movie) => {
 }
 
 const handleLike = (e) => {
-    
+    console.log(e)
 }
+
+// const addLike = (item) => {
+//     console.log(item)
+//     let likes = item.likes+=1
+//     console.log(likes)
+
+//     fetch(`http://localhost:3000/recipe/1`, {
+//         method:'PATCH',
+//         headers:{
+//             'Content-Type':'application/json'
+//         },
+//         body: JSON.stringify({likes:likes})
+//     })
+//     .then(res => res.json())
+//     .then(json => {
+//       let oldLikes =  card.querySelector('.likes')
+//       oldLikes.innerText = `${json.likes} likes`
+//     })
+// }
 
 const addComment = (e, movie) => {
     e.preventDefault()
@@ -182,7 +203,7 @@ const addComment = (e, movie) => {
     comment.textContent = e.target.comment.value
     ul.appendChild(comment)
 
-    let data = {content: e.target.comment.value, movie_id: movie.id, user_id: 6}
+    let data = {content: e.target.comment.value, movie_id: movie.id, user_id: found_user_id}
     
     fetch(`http://localhost:3000/comments`, {
         method: 'POST', // or 'PUT'
