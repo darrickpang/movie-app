@@ -1,13 +1,13 @@
 require 'rest-client'
 
-response = RestClient.get("https://devru-bigflix-movies-download-v1.p.rapidapi.com/movieList.php?pageIndex=1&resultsperpage=20",
-  headers = {
-    "X-RapidAPI-Host" => "devru-bigflix-movies-download-v1.p.rapidapi.com",
-    "X-RapidAPI-Key" => "85738c6f15msh4d8de352b317a53p13b061jsnde4b359cbfa8"
-  })
+# response = RestClient.get("https://devru-bigflix-movies-download-v1.p.rapidapi.com/movieList.php?pageIndex=1&resultsperpage=20",
+#   headers = {
+#     "X-RapidAPI-Host" => "",
+#     "X-RapidAPI-Key" => ""
+#   })
 
 
-parsedRes = JSON.parse(response)
+# parsedRes = JSON.parse(response)
 
 
 }
@@ -20,7 +20,7 @@ parsedRes = JSON.parse(response)
 #     )
 # end
 
-byebug
+# byebug
 
 
 User.destroy_all

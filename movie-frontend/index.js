@@ -49,8 +49,6 @@ const fetchUser = (e) => {
     fetch(`http://localhost:3000/users`) 
     .then(res => res.json())
     .then(json => checkUser(data.name, json))
-    
-
 }
 
 const checkUser = (username, userArray) => {
@@ -66,11 +64,9 @@ const checkUser = (username, userArray) => {
     } else {
         alert('Username Not Found! Please Create User!')
     }
-
-    console.log(foundUser)
+    // console.log(foundUser)
     // if(post.name == username)
     // console.log(foundUser)
-
     // for(i=0; i< userArray.length; i++) {
     //     if (username === userArray[i].name) {
     //         console.log('success')
@@ -111,8 +107,7 @@ const listMovies = (movies) => {
 
         let li = document.createElement('li')
         li.innerHTML = `
-            <h3>${movies.data[i].attributes.title}</h3> 
-        `
+            <h3>${movies.data[i].attributes.title}</h3> `
         
         li.addEventListener('click', (e) => {
              showMovie(e, movies.data[i])
@@ -129,12 +124,10 @@ const listMovies = (movies) => {
     //     li.innerHTML = `
     //         <h3>${movies.data[0].attributes.title}</h3> 
     //     `
-        
     //     li.addEventListener('click', (e) => {
     //          showMovie(e, movie)
     //     })
     //     // console.log(movie[0].title)
-        
     //     ul.appendChild(li)
     // })
 }
@@ -166,14 +159,18 @@ const showMovie = (e, movie) => {
     })
     
     let likeButton = document.querySelector('button')
-    likeButton.addEventListener('click', () => {
-        handleLike();
+    likeButton.addEventListener('click', (e) => {
+        handleLike(e);
     })
 
     let commentForm = document.getElementById('comment-form')
     commentForm.addEventListener('submit', (e) => {
         addComment(e, movie)
     })
+}
+
+const handleLike = (e) => {
+    
 }
 
 const addComment = (e, movie) => {
@@ -186,7 +183,6 @@ const addComment = (e, movie) => {
     ul.appendChild(comment)
 
     let data = {content: e.target.comment.value, movie_id: movie.id, user_id: 6}
-
     
     fetch(`http://localhost:3000/comments`, {
         method: 'POST', // or 'PUT'
