@@ -83,7 +83,7 @@ const checkUser = (username, userArray) => {
     //     }
     // }
 }
-//checkUser()
+
 const addUser = (e) => {
     e.preventDefault()
     let data = ({name: e.target["0"].value})
