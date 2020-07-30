@@ -90,7 +90,7 @@ const addComment = (e, movie) => {
     comment.textContent = e.target.comment.value
     ul.appendChild(comment)
 
-    let data = {content: e.target.comment.value, movie_id: movie.id, user_id: 5}
+    let data = {content: e.target.comment.value, movie_id: movie.id, user_id: 7}
 
     
     fetch(`http://localhost:3000/comments`, {
