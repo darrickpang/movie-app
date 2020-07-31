@@ -291,7 +291,7 @@ const addComment = (e, movie) => {
     comment.textContent = e.target.comment.value
     ul.appendChild(comment)
     
-    let edit = ul.querySelector(li)
+    let edit = ul.querySelector('li')
     let editButton = document.createElement('button')
     edit.append(editButton)
 
