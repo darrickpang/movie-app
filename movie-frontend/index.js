@@ -221,6 +221,7 @@ const deleteComment = (comment) =>{
 
 const likeStatus = (e, movie) =>{                       // NEEDS TO BE FIXED!!!
     e.preventDefault()
+    debugger
     let likeButton = document.getElementById('like')
     // console.log(movie.data.attributes.likes)
     console.log(movie.attributes.likes)
