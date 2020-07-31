@@ -16,16 +16,16 @@ class CommentsController < ApplicationController
     end
 
     def edit
-        comment = Comment.find(comment_params)
+        comment = Comment.find(params[:id])
     end
 
     def update
-        comment = Comment.find(comment_params)
-        comment.update(content: params[:comments][:content])
+        comment = Comment.find(params[:id])
+        comment.update(comment_params)
     end
 
     def destroy
-        comment = Comment.find(comment_params).destroy
+        comment = Comment.find(params[:id]).destroy
     end
 
     private
