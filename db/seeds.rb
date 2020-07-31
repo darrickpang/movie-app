@@ -2,12 +2,15 @@
 
 # response = RestClient.get("https://devru-bigflix-movies-download-v1.p.rapidapi.com/movieList.php?pageIndex=1&resultsperpage=20",
 #   headers = {
-#     "X-RapidAPI-Host" => "devru-bigflix-movies-download-v1.p.rapidapi.com",
-#     "X-RapidAPI-Key" => "85738c6f15msh4d8de352b317a53p13b061jsnde4b359cbfa8"
+#     "X-RapidAPI-Host" => "",
+#     "X-RapidAPI-Key" => ""
 #   })
 
 
+# parsedRes = JSON.parse(response)
 
+
+# }
 # parsedRes.each do |movie|
 #     Movie.create(
 #         title: movie["movieName"],
@@ -22,12 +25,14 @@
 
 User.destroy_all
 Movie.destroy_all
-Comment.destroy_all 
+Comment.destroy_all
+Like.destroy_all 
 
 # byebug
 # rm_array = JSON.parse(rm)[“results”]
 
 user1 = User.create(name: 'user1')
+user2 = User.create(name: 'user2')
 
 
 movie1 = Movie.create(title: "Terminator 2: Judgement Day", director: "James Cameron", description: "Another Terminator was sent back in time this time to kill John Conner", year: 1991)
@@ -58,6 +63,6 @@ movie9 = Movie.create(title: "Schindler's List", director: "Steven Spielberg", d
 # comment2 = Comment.create(content: 'content2', user_id: user2.id, movie_id: movie2.id)
 # comment3 = Comment.create(content: 'content3', user_id: user3.id, movie_id: movie4.id)
 
-# like1 = Like.create(user_id: 1, movie_id: 1)
-# like2 = Like.create(user_id: 2, movie_id: 2)
-# like3 = Like.create(user_id: 3, movie_id: 3)
+like1 = Like.create(user_id: user1.id, movie_id: movie2.id, status: true)
+like2 = Like.create(user_id: user2.id, movie_id: movie2.id, status: false)
+# like3 = Like.create(user_id: 3, movie_id: 3, likeStatus: true)
