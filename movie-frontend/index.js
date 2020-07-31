@@ -236,7 +236,7 @@ const likeStatus = (e, movie) =>{                       // NEEDS TO BE FIXED!!!
       })
     })
     if(movie.status == true){
-        likeButton.innerText = '♡' //this works, try it
+        likeButton.innerText = '♡'
         movie.status = false
     }
     else{

@@ -42,4 +42,4 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 gem 'rest-client'
 
-gem 'materialize-sass', '~> 1.0.0'
+# gem 'materialize-sass', '~> 1.0.0'
