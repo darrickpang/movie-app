@@ -35,6 +35,7 @@ user1 = User.create(name: 'user1')
 user2 = User.create(name: 'user2')
 
 
+
 movie1 = Movie.create(title: "movie1", director: "director1", description: "description1", year: 2001)
 movie2 = Movie.create(title: "Tears of the Sun", director: "Antoine Fuqua", description: "Bruce Willis and his SEAL platoon leads refugees to sefety in Nigeria.", year: 2003)
 movie3 = Movie.create(title: "The Dark Knight", director: "Christopher Nolan", description: "When the menace known as the Joker wreaks havoc and chaos on the people of Gotham, Batman must accept one of the greatest psychological and physical tests of his ability to fight injustice.", year: 2008)
