@@ -4,16 +4,6 @@ document.addEventListener('DOMContentLoaded', () => {
 })
 
 const initializeUserForm = () =>{
-    let body = document.querySelector('body')
-    let span = document.createElement('span')
-    span.setAttribute('id', 'userSpan')
-    span.innerHTML = `
-    <form id='user-form'>
-            <input id='username' placeholder='username'>
-            <input type='submit' value='Create User'>
-    </form>
-    `
-    body.appendChild(span)
     
     let userForm = document.getElementById('user-form')
     userForm.addEventListener('submit', (e) => {
@@ -22,16 +12,6 @@ const initializeUserForm = () =>{
 }
 
 const initializeLoginForm = () =>{
-    let body = document.querySelector('body')
-    let span = document.createElement('span')
-    span.setAttribute('id', 'loginSpan')
-    span.innerHTML = `
-    <form id='login-form'>
-            <input id='username' placeholder='username'>
-            <input type='submit' value='Login'>
-    </form>
-    `
-    body.appendChild(span)
     
     let loginForm = document.getElementById('login-form')
     loginForm.addEventListener('submit', (e) => {
@@ -148,9 +128,10 @@ const showMovie = (e, movie) => {
     })
     
     let likeButton = document.querySelector('button')
+    likeButton.innerText = status ? "♥" : "♡"
     likeButton.addEventListener('click', (e) => {
-        likeStatus(e, movie),
-        handleLike(e, movie)
+        likeStatus(e, movie)
+        // handleLike(e, movie)
     })
 
     //likeStatus(movie)
@@ -219,12 +200,11 @@ const deleteComment = (comment) =>{
     }) 
 }
 
-const likeStatus = (e, movie) =>{                       // NEEDS TO BE FIXED!!!
+const likeStatus = (e, movie) =>{                       
     e.preventDefault()
-    let likeButton = document.getElementById('like')
     //console.log(likeButton.innerText)
-    console.log(movie.attributes.likes)
-
+    // console.log(movie.attributes.likes)
+    // console.log(movie.attributes.likes[0].status)
     fetch(`http://localhost:3000/movies/${movie.id}`, {
         method: 'PATCH',
         headers: {
@@ -232,17 +212,20 @@ const likeStatus = (e, movie) =>{                       // NEEDS TO BE FIXED!!!
             Accept: "application/json"
         },
         body: JSON.stringify({
-            status: movie.status
-      })
+            status: !(movie.attributes.likes[0].status)
+        })
     })
-    if(movie.status == true){
+    let likeButton = document.getElementById('like')
+    if (movie.attributes.likes.status == true){
         likeButton.innerText = '♡' //this works, try it
-        movie.status = false
-    }
-    else{
+        movie.attributes.likes.status = false
+    } else { 
         likeButton.innerText = '♥'
-        movie.status = true   
+        movie.attributes.likes.status = true   
     }
+    console.log(movie.attributes.likes.status)
+    // .then(res => res.json())
+    // .then(json => console.log(json))
 }
 
 // let foundUser = userArray.find(function(post , index) {
@@ -291,9 +274,18 @@ const addComment = (e, movie) => {
     comment.textContent = e.target.comment.value
     ul.appendChild(comment)
     
-    let edit = ul.querySelector('li')
     let editButton = document.createElement('button')
-    edit.append(editButton)
+    editButton.textContent = "Edit"
+    comment.append(editButton)
+    editButton.addEventListener('click', (e) => {
+        updateComment(e, comment)
+    })
+    let dltButton = document.createElement('button')
+    dltButton.textContent = "Delete"
+    comment.append(dltButton)
+    dltButton.addEventListener('click', (e) => {
+        deleteComment(comment)
+    })
 
     let data = {content: e.target.comment.value, movie_id: movie.id, user_id: found_user_id}
     
