@@ -100,9 +100,6 @@ const listMovies = (movies) => {
     }
 }
 
-const EMPTY_HEART = '♡'
-const FULL_HEART = '♥'
-
 const showMovie = (e, movie) => {
     let div = document.getElementById('show-panel')
     
@@ -111,30 +108,49 @@ const showMovie = (e, movie) => {
     <h2>${movie.attributes.director}</h2>
     <h3>${movie.attributes.year}</h3>
     <p>${movie.attributes.description}</p>
-    <button id='like'>${EMPTY_HEART}</button> 
+    <button id='like'>♡</button> 
     <form id='comment-form'>
             <input id='comment' placeholder='comment'>
             <input type='submit' value='Leave Comment'>
     </form>
+    <button id='update'>Update Comment</button>
     <div id='comment-section'><ul id='movie-comments'></ul>
     </div>
     `
 
-    // return (status ? addLike() : removeLike());
-    // let likeStatus = funcion()
-
-
-
     let ul = document.getElementById('movie-comments')
     movie.attributes.comments.forEach(comment => {
         let li = document.createElement('li')
+        li.id = 'liElement'
+        li.innerHTML = `<button id="edit" data-id=${comment.id}>Edit</button>
+                        <button id="delete" data-id=${comment.id}>Delete</button>`
         li.innerText = comment.content
         ul.appendChild(li)
+
+        let editButton = document.createElement('button')
+        editButton.innerText = 'Edit'
+        editButton.addEventListener('click', (e) => {
+            editComment(e, comment)
+        })
+        li.append(editButton)
+
+        let updateComments = document.getElementById('update')
+        updateComments.addEventListener('click', (e) => {
+            updateComment(e, movie, comment)
+        })
+
+        let deleteButton = document.createElement('button')
+        deleteButton.innerText = 'Delete'
+        deleteButton.addEventListener('click', (e) => {
+            deleteComment(comment)
+        })
+        li.append(deleteButton)
     })
     
     let likeButton = document.querySelector('button')
     likeButton.addEventListener('click', (e) => {
-        likeStatus(e, movie);
+        likeStatus(e, movie),
+        handleLike(e, movie)
     })
 
     //likeStatus(movie)
@@ -145,7 +161,66 @@ const showMovie = (e, movie) => {
     })
 }
 
-const likeStatus = (e, movie) =>{
+
+const editComment = (e, comment) => {
+    fetch(`http://localhost:3000/comments/${comment.id}`)
+        .then(function(response){
+            return response.json()
+        })
+        .then(comment => {
+            let form = document.getElementById('comment-form')
+            console.log(form[0].value)
+            commentForm = form[0]
+            commentForm.value = comment.content
+            commentForm.dataset.id = comment.id
+        })
+    
+}
+
+const updateComment = (e, movie, comment) =>{
+    e.preventDefault()
+
+    
+    console.log(document.getElementById('liElement'))
+    let ul = document.getElementById('movie-comments')
+    let editComment = document.getElementById('liElement')
+    
+    let form = document.getElementById('comment-form')
+    console.log(form[0].value)
+    editComment.textContent = form[0].value
+    // ul.appendChild(editComment)
+    
+    // let edit = ul.querySelector(li)
+    // let editButton = document.createElement('button')
+    // edit.append(editButton)
+
+    let data = {content: form[0].value, movie_id: movie.id, user_id: found_user_id}
+    
+    fetch(`http://localhost:3000/comments/${comment.id}`, {
+        method: 'PATCH', 
+        headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json'
+        },
+        body: JSON.stringify(data),
+    }) 
+}
+
+const deleteComment = (comment) =>{
+    console.log(comment.id)
+    let clear = event.target.parentElement
+    clear.remove()    
+    console.log(event.target.parentElement)
+    fetch(`http://localhost:3000/comments/${comment.id}`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    }) 
+}
+
+const likeStatus = (e, movie) =>{                       // NEEDS TO BE FIXED!!!
+    e.preventDefault()
     let likeButton = document.getElementById('like')
     // console.log(movie.data.attributes.likes)
     console.log(movie.attributes.likes)
@@ -160,16 +235,29 @@ const likeStatus = (e, movie) =>{
       })
     })
     if(movie.status == true){
-        e.likeButton.innerText = '♡'
+        likeButton.innerText = '♡' //this works, try it
         movie.status = false
     }
     else{
-        e.likeButton.innerText = '♥'
+        likeButton.innerText = '♥'
         movie.status = true   
     }
 }
 
+// let foundUser = userArray.find(function(post , index) {
+//     if (post.name == username)
+//     return true;
+// })
+
+// if (foundUser) {
+//     fetchMovies();
+    
+// } else {
+//     alert('Username Not Found! Please Create User!')
+// }
+
 const handleLike = (e, movie) => {
+    e.preventDefault()
     // console.log(e)
     let data = {movie_id: movie.id, user_id: found_user_id}
     fetch(`http://localhost:3000/likes`, {
@@ -191,6 +279,10 @@ const addComment = (e, movie) => {
     let comment = document.createElement('li')
     comment.textContent = e.target.comment.value
     ul.appendChild(comment)
+    
+    let edit = ul.querySelector(li)
+    let editButton = document.createElement('button')
+    edit.append(editButton)
 
     let data = {content: e.target.comment.value, movie_id: movie.id, user_id: found_user_id}
     
